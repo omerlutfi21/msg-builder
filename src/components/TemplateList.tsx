@@ -2,7 +2,7 @@ import { Template } from "@/types/template";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, ArrowRight } from "lucide-react";
+import { MessageSquare, ArrowRight, MousePointerClick, Image, FileText } from "lucide-react";
 
 interface TemplateListProps {
   templates: Template[];
@@ -55,7 +55,25 @@ export const TemplateList = ({ templates, onSelectTemplate }: TemplateListProps)
                 {template.bodyText}
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                {template.header && (
+                  <Badge variant="outline" className="gap-1">
+                    {template.header.type === 'IMAGE' ? (
+                      <Image className="h-3 w-3" />
+                    ) : template.header.type === 'TEXT' ? (
+                      <FileText className="h-3 w-3" />
+                    ) : null}
+                    Header
+                  </Badge>
+                )}
+                {template.buttons && template.buttons.length > 0 && (
+                  <Badge variant="outline" className="gap-1">
+                    <MousePointerClick className="h-3 w-3" />
+                    {template.buttons.length} Button{template.buttons.length > 1 ? 's' : ''}
+                  </Badge>
+                )}
+              </div>
               <Button 
                 variant="ghost" 
                 className="w-full group-hover:bg-primary/5 transition-colors"

@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TemplatePreview } from "./TemplatePreview";
-import { ArrowLeft, Settings, Save, MessageSquare } from "lucide-react";
+import { WhatsAppTemplatePreview } from "./WhatsAppTemplatePreview";
+import { ArrowLeft, Settings, Save, MessageSquare, Image, FileText, MousePointerClick } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Separator } from "@/components/ui/separator";
 
 interface TemplateConfiguratorProps {
   template: Template;
@@ -20,8 +21,14 @@ export const TemplateConfigurator = ({ template, onBack }: TemplateConfiguratorP
   const { toast } = useToast();
 
   useEffect(() => {
-    // Extract variables from template
-    const matches = template.bodyText.match(/{{(\w+)}}/g);
+    // Extract variables from all parts of the template
+    const allText = [
+      template.bodyText,
+      template.header?.text || '',
+      ...(template.buttons?.map(b => b.url || '') || []),
+    ].join(' ');
+    
+    const matches = allText.match(/{{(\w+)}}/g);
     if (matches) {
       const extractedVars = matches.map(match => match.replace(/{{|}}/g, ''));
       setVariables([...new Set(extractedVars)]);
@@ -65,8 +72,8 @@ export const TemplateConfigurator = ({ template, onBack }: TemplateConfiguratorP
     });
   };
 
-  const renderTemplateWithVariables = () => {
-    const parts = template.bodyText.split(/{{(\w+)}}/g);
+  const renderTextWithVariables = (text: string) => {
+    const parts = text.split(/{{(\w+)}}/g);
     
     return parts.map((part, index) => {
       if (variables.includes(part)) {
@@ -106,18 +113,84 @@ export const TemplateConfigurator = ({ template, onBack }: TemplateConfiguratorP
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MessageSquare className="h-5 w-5 text-primary" />
-                Template Content
+                Template Structure
               </CardTitle>
               <CardDescription>
                 Variables are highlighted in the text below
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <p className="text-card-foreground leading-relaxed whitespace-pre-wrap">
-                  {renderTemplateWithVariables()}
-                </p>
+            <CardContent className="space-y-4">
+              {/* Header */}
+              {template.header && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    {template.header.type === 'IMAGE' ? (
+                      <Image className="h-4 w-4" />
+                    ) : (
+                      <FileText className="h-4 w-4" />
+                    )}
+                    HEADER ({template.header.type})
+                  </div>
+                  {template.header.type === 'IMAGE' && template.header.mediaUrl ? (
+                    <img 
+                      src={template.header.mediaUrl} 
+                      alt="Header preview"
+                      className="w-full h-32 object-cover rounded-lg border border-border"
+                    />
+                  ) : template.header.text ? (
+                    <div className="bg-muted/50 p-3 rounded-lg text-sm">
+                      {renderTextWithVariables(template.header.text)}
+                    </div>
+                  ) : null}
+                </div>
+              )}
+
+              {/* Body */}
+              <div className="space-y-2">
+                <div className="text-sm font-semibold text-muted-foreground">BODY</div>
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <p className="text-card-foreground leading-relaxed whitespace-pre-wrap text-sm">
+                    {renderTextWithVariables(template.bodyText)}
+                  </p>
+                </div>
               </div>
+
+              {/* Footer */}
+              {template.footer && (
+                <div className="space-y-2">
+                  <div className="text-sm font-semibold text-muted-foreground">FOOTER</div>
+                  <div className="bg-muted/50 p-3 rounded-lg text-xs text-muted-foreground">
+                    {template.footer}
+                  </div>
+                </div>
+              )}
+
+              {/* Buttons */}
+              {template.buttons && template.buttons.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+                    <MousePointerClick className="h-4 w-4" />
+                    BUTTONS ({template.buttons.length})
+                  </div>
+                  <div className="space-y-2">
+                    {template.buttons.map((button, index) => (
+                      <div key={index} className="bg-muted/50 p-3 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium">{button.text}</span>
+                          <Badge variant="outline" className="text-xs">
+                            {button.type}
+                          </Badge>
+                        </div>
+                        {button.url && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {renderTextWithVariables(button.url)}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -161,7 +234,7 @@ export const TemplateConfigurator = ({ template, onBack }: TemplateConfiguratorP
         </div>
 
         <div className="space-y-6">
-          <TemplatePreview bodyText={template.bodyText} variableMapping={variableMapping} />
+          <WhatsAppTemplatePreview template={template} variableMapping={variableMapping} />
 
           <Button 
             onClick={handleSave} 
