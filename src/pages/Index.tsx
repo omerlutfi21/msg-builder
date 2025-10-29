@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Template, sampleTemplates } from "@/types/template";
 import { TemplateList } from "@/components/TemplateList";
 import { TemplateConfigurator } from "@/components/TemplateConfigurator";
+import { TemplatePopoverConfigurator } from "@/components/TemplatePopoverConfigurator";
 
 const Index = () => {
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
@@ -10,10 +11,15 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-subtle">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {!selectedTemplate ? (
-          <TemplateList 
-            templates={sampleTemplates} 
-            onSelectTemplate={setSelectedTemplate}
-          />
+          <>
+            <div className="flex justify-end mb-4">
+              <TemplatePopoverConfigurator />
+            </div>
+            <TemplateList 
+              templates={sampleTemplates} 
+              onSelectTemplate={setSelectedTemplate}
+            />
+          </>
         ) : (
           <TemplateConfigurator 
             template={selectedTemplate}
