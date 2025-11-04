@@ -183,4 +183,116 @@ export const sampleTemplates: Template[] = [
       },
     ],
   },
+  {
+    id: '7',
+    name: 'New Collection Launch',
+    category: 'marketing',
+    header: {
+      type: 'IMAGE',
+      mediaUrl: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800',
+    },
+    bodyText: 'Hey {{customer_name}}! Our new collection is here! Check out {{product_name}} with exclusive {{discount_code}} - Get {{total_amount}} off!',
+    footer: 'Limited stock available',
+    buttons: [
+      {
+        type: 'URL',
+        text: 'Shop Collection',
+        url: 'https://shop.example.com/collection',
+      },
+      {
+        type: 'QUICK_REPLY',
+        text: 'More Info',
+      },
+    ],
+  },
+  {
+    id: '8',
+    name: 'Product Tutorial',
+    category: 'utility',
+    header: {
+      type: 'VIDEO',
+      mediaUrl: 'https://example.com/video/tutorial.mp4',
+    },
+    bodyText: 'Hi {{customer_name}}! Watch this quick tutorial on how to use {{product_name}}. Need help? Contact us anytime!',
+    footer: 'We are here to help',
+    buttons: [
+      {
+        type: 'URL',
+        text: 'Full Guide',
+        url: 'https://help.example.com/{{product_name}}',
+      },
+      {
+        type: 'PHONE_NUMBER',
+        text: 'Call Support',
+        phoneNumber: '+1234567890',
+      },
+    ],
+  },
+  {
+    id: '9',
+    name: 'Flash Sale Alert',
+    category: 'marketing',
+    header: {
+      type: 'IMAGE',
+      mediaUrl: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=800',
+    },
+    bodyText: '🔥 Flash Sale Alert, {{customer_name}}! {{product_name}} is now {{total_amount}} OFF! Use code: {{discount_code}}',
+    footer: 'Ends in 24 hours!',
+    buttons: [
+      {
+        type: 'URL',
+        text: 'Shop Now',
+        url: 'https://shop.example.com/sale',
+      },
+      {
+        type: 'QUICK_REPLY',
+        text: 'Set Reminder',
+      },
+    ],
+  },
+  {
+    id: '10',
+    name: 'Delivery Update Video',
+    category: 'transactional',
+    header: {
+      type: 'VIDEO',
+      mediaUrl: 'https://example.com/video/delivery.mp4',
+    },
+    bodyText: 'Hi {{customer_name}}, your order {{order_id}} is on its way! Track it with {{tracking_number}}. Expected delivery: {{delivery_date}}',
+    footer: 'Thank you for your order',
+    buttons: [
+      {
+        type: 'URL',
+        text: 'Track Package',
+        url: 'https://tracking.example.com/{{tracking_number}}',
+      },
+    ],
+  },
+  {
+    id: '11',
+    name: 'Restaurant Menu Special',
+    category: 'marketing',
+    header: {
+      type: 'IMAGE',
+      mediaUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800',
+    },
+    bodyText: 'Hello {{customer_name}}! Try our chef special {{product_name}} today! Order now and get {{total_amount}} off with code {{discount_code}}',
+    footer: 'Available for dine-in and delivery',
+    buttons: [
+      {
+        type: 'URL',
+        text: 'View Menu',
+        url: 'https://restaurant.example.com/menu',
+      },
+      {
+        type: 'PHONE_NUMBER',
+        text: 'Call to Order',
+        phoneNumber: '+1234567890',
+      },
+      {
+        type: 'QUICK_REPLY',
+        text: 'Reserve Table',
+      },
+    ],
+  },
 ];
